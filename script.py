@@ -33,8 +33,8 @@ def run_pocket_tts(folder_name, voice="alba"):
 
     # Generate output filenames
     timestamp = datetime.now().strftime("%y-%m-%d--%H-%M-%S")
-    output_wav = folder / f"{timestamp}-{folder_name}.wav"
-    output_mp3 = folder / f"{timestamp}-{folder_name}.mp3"
+    output_wav = folder / f"{timestamp}-{folder_name}-{voice}.wav"
+    output_mp3 = folder / f"{timestamp}-{folder_name}-{voice}.mp3"
 
     print(f"Generating audio from {script_file}...")
     print(f"Text: {text[:50]}..." if len(text) > 50 else f"Text: {text}")
