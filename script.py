@@ -44,10 +44,8 @@ def run_pocket_tts(folder_name, voice="alba"):
         # Load model
         tts_model = TTSModel.load_model()
 
-        # Get voice state using default voice
-        voice_state = tts_model.get_state_for_audio_prompt(
-            f"hf://kyutai/tts-voices/{voice}-mackenna/casual.wav"
-        )
+        # Get voice state using voice name
+        voice_state = tts_model.get_state_for_audio_prompt(voice)
 
         # Generate audio
         print("Generating speech...")
