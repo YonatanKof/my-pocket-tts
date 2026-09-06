@@ -15,6 +15,7 @@ except ImportError:
 def run_pocket_tts(folder_name, voice="alba"):
     folder = Path(folder_name)
     script_file = folder / "Script.md"
+    voice_path = Path(voice)
 
     # Validate inputs
     if not folder.exists():
@@ -25,6 +26,16 @@ def run_pocket_tts(folder_name, voice="alba"):
         print(f"Error: {script_file} not found")
         sys.exit(1)
 
+    # Determine voice identifier for filename (use voice name or file name)
+    if voice_path.exists():
+        voice_id = voice_path.stem  # filename without extension
+        voice_input = str(voice_path.absolute())
+        print(f"Using custom voice: {voice}")
+    else:
+        voice_id = voice
+        voice_input = voice
+        print(f"Using voice: {voice}")
+
     # Read text
     text = script_file.read_text().strip()
     if not text:
@@ -33,8 +44,8 @@ def run_pocket_tts(folder_name, voice="alba"):
 
     # Generate output filenames
     timestamp = datetime.now().strftime("%y-%m-%d--%H-%M-%S")
-    output_wav = folder / f"{timestamp}-{folder_name}-{voice}.wav"
-    output_mp3 = folder / f"{timestamp}-{folder_name}-{voice}.mp3"
+    output_wav = folder / f"{timestamp}-{folder_name}-{voice_id}.wav"
+    output_mp3 = folder / f"{timestamp}-{folder_name}-{voice_id}.mp3"
 
     print(f"Generating audio from {script_file}...")
     print(f"Text: {text[:50]}..." if len(text) > 50 else f"Text: {text}")
@@ -44,8 +55,8 @@ def run_pocket_tts(folder_name, voice="alba"):
         # Load model
         tts_model = TTSModel.load_model()
 
-        # Get voice state using voice name
-        voice_state = tts_model.get_state_for_audio_prompt(voice)
+        # Get voice state using voice name or file
+        voice_state = tts_model.get_state_for_audio_prompt(voice_input)
 
         # Generate audio
         print("Generating speech...")
@@ -77,7 +88,9 @@ def run_pocket_tts(folder_name, voice="alba"):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: uv run script.py <folder-name> [voice]")
-        print("Voices: alba, marius, javert, jean, fantine, cosette, eponine, azelma")
+        print("Voice options:")
+        print("  - Built-in: alba, marius, javert, jean, fantine, cosette, eponine, azelma")
+        print("  - Custom file: voice.wav, ./path/to/voice.wav")
         sys.exit(1)
     folder = sys.argv[1]
     voice = sys.argv[2] if len(sys.argv) > 2 else "alba"
