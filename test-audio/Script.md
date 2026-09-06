@@ -1,0 +1,1 @@
+Hello, this is a test of the pocket TTS system. It reads text from a markdown file and generates audio using a voice sample.

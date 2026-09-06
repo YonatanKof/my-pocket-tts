@@ -1,0 +1,20 @@
+[project]
+name = "pocket-tts-ii"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Yonatan Kof", email = "kof@yonatankof.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "pocket-tts>=3.1.0",
+    "scipy>=1.17.1",
+]
+
+[project.scripts]
+pocket-tts-ii = "pocket_tts_ii:main"
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
