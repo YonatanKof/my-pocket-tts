@@ -12,10 +12,9 @@ except ImportError:
     print("Run: uv sync")
     sys.exit(1)
 
-def run_pocket_tts(folder_name):
+def run_pocket_tts(folder_name, voice="alba"):
     folder = Path(folder_name)
     script_file = folder / "Script.md"
-    voice_file = Path("voice.wav")
 
     # Validate inputs
     if not folder.exists():
@@ -24,10 +23,6 @@ def run_pocket_tts(folder_name):
 
     if not script_file.exists():
         print(f"Error: {script_file} not found")
-        sys.exit(1)
-
-    if not voice_file.exists():
-        print(f"Error: voice.wav not found in current directory")
         sys.exit(1)
 
     # Read text
@@ -49,8 +44,10 @@ def run_pocket_tts(folder_name):
         # Load model
         tts_model = TTSModel.load_model()
 
-        # Get voice state from custom voice file
-        voice_state = tts_model.get_state_for_audio_prompt(str(voice_file))
+        # Get voice state using default voice
+        voice_state = tts_model.get_state_for_audio_prompt(
+            f"hf://kyutai/tts-voices/{voice}-mackenna/casual.wav"
+        )
 
         # Generate audio
         print("Generating speech...")
@@ -81,6 +78,9 @@ def run_pocket_tts(folder_name):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: uv run script.py <folder-name>")
+        print("Usage: uv run script.py <folder-name> [voice]")
+        print("Voices: alba, marius, javert, jean, fantine, cosette, eponine, azelma")
         sys.exit(1)
-    run_pocket_tts(sys.argv[1])
+    folder = sys.argv[1]
+    voice = sys.argv[2] if len(sys.argv) > 2 else "alba"
+    run_pocket_tts(folder, voice)
