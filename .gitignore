@@ -1,0 +1,9 @@
+# Dependencies
+.venv/
+
+# Content folders (personal, not tracked)
+content/*
+
+# Generated audio
+*.wav
+*.mp3

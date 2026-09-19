@@ -12,9 +12,9 @@ except ImportError:
     print("Run: uv sync")
     sys.exit(1)
 
-def run_pocket_tts(folder_name, voice="alba"):
+def run_pocket_tts(folder_name, voice="eponine"):
     folder = Path(folder_name)
-    script_file = folder / "Script.md"
+    script_file = folder / "text.md"
     voice_path = Path(voice)
 
     # Validate inputs
@@ -43,9 +43,9 @@ def run_pocket_tts(folder_name, voice="alba"):
         sys.exit(1)
 
     # Generate output filenames
-    timestamp = datetime.now().strftime("%y-%m-%d--%H-%M-%S")
-    output_wav = folder / f"{timestamp}-{folder_name}-{voice_id}.wav"
-    output_mp3 = folder / f"{timestamp}-{folder_name}-{voice_id}.mp3"
+    timestamp = datetime.now().strftime("%y%m%d-%H%M%S")
+    output_wav = folder / f"{timestamp} - {folder_name} - {voice_id}.wav"
+    output_mp3 = folder / f"{timestamp} - {folder_name} - {voice_id}.mp3"
 
     print(f"Generating audio from {script_file}...")
     print(f"Text: {text[:50]}..." if len(text) > 50 else f"Text: {text}")
@@ -87,11 +87,11 @@ def run_pocket_tts(folder_name, voice="alba"):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: uv run script.py <folder-name> [voice]")
+        print("Usage: uv run script.py content/<folder-name> [voice]")
         print("Voice options:")
         print("  - Built-in: alba, marius, javert, jean, fantine, cosette, eponine, azelma")
         print("  - Custom file: voice.wav, ./path/to/voice.wav")
         sys.exit(1)
     folder = sys.argv[1]
-    voice = sys.argv[2] if len(sys.argv) > 2 else "alba"
+    voice = sys.argv[2] if len(sys.argv) > 2 else "eponine"
     run_pocket_tts(folder, voice)
